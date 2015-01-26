@@ -1,0 +1,34 @@
+﻿@model IEnumerable<string>
+
+<div class="btn-group btn-group-sm btn-group-justified">
+
+    @foreach (var link in Model)
+    {
+        @Html.RouteLink(link, new
+            {
+                controller = "Product",
+                action = "List",
+                category = link,
+                page = 1
+            }, new
+            {
+                @class = "btn btn-default btn-sm" + (link == ViewBag.SelectedCategory ? " btn-primary" : "")
+            })
+    }
+
+    <!-- If no category is selected, show a disabled clear button.
+         Otherwise, enable the clear button.
+         Must be done in this manner, as ANY value for "disabled" causes the button to be disabled.
+         Ex: "disabled=true" causes button to be disabled, "disabled=false" also causes button to be disabled  -->
+    @{
+        if (ViewBag.SelectedCategory == null)
+        {
+            @Html.ActionLink("Clear Filter", "List", "Product", null, new { @class = "btn btn-block btn-default", @disabled = true })
+        }
+        else
+        {
+            @Html.ActionLink("Clear Filter", "List", "Product", null, new { @class = "btn btn-block btn-default" })
+        }
+    }
+
+</div>

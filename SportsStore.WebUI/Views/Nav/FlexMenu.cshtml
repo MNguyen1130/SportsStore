@@ -1,0 +1,48 @@
+﻿@model IEnumerable<string>
+
+@{
+    bool horizontal = ((bool)(ViewContext.RouteData.Values["horizontalLayout"] ?? false));
+    string wrapperClasses = horizontal ? "btn-group btn-group-sm btn-group-justified" : null;
+}
+
+<div class="@wrapperClasses">
+    @{
+        if (!horizontal)
+        { 
+            <h1 class="text-center">Filters</h1>
+        }
+    }
+
+    @foreach (var link in Model)
+    {
+        @Html.RouteLink(link, new
+            {
+                controller = "Product",
+                action = "List",
+                category = link,
+                page = 1
+            }, new
+            {
+                @class = (horizontal ? "btn btn-default btn-sm" : "btn btn-block btn-default btn-lg" ) 
+                    + (link == ViewBag.SelectedCategory ? " btn-primary" : "")
+            })
+    }
+
+    <!-- If no category is selected, show a disabled clear button.
+         Otherwise, enable the clear button.
+         Must be done in this manner, as ANY value for "disabled" causes the button to be disabled.
+         Ex: "disabled=true" causes button to be disabled, "disabled=false" also causes button to be disabled  -->
+    @{
+        if (ViewBag.SelectedCategory == null)
+        {
+            @Html.ActionLink("Clear Filter", "List", "Product", null, new { @class = "btn btn-block btn-default", @disabled = true })
+        }
+        else
+        {
+            @Html.ActionLink("Clear Filter", "List", "Product", null, new { @class = "btn btn-block btn-default" })
+        }
+    }
+
+</div>
+
+

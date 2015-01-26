@@ -19,4 +19,13 @@
         })
 }
 
-@Html.ActionLink("Clear", "List", "Product", null, new { @class = "btn btn-block btn-default", @style = (ViewBag.SelectedCategory == null ? "visibility:hidden" : "") })
+@{
+    if (ViewBag.SelectedCategory == null)
+    {
+        @Html.ActionLink("Clear", "List", "Product", null, new { @class = "btn btn-block btn-default", @disabled = true })
+    }
+    else
+    {
+        @Html.ActionLink("Clear", "List", "Product", null, new { @class = "btn btn-block btn-default" })
+    }
+}
